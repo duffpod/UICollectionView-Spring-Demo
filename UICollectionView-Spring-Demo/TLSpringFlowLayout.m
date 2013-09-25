@@ -23,18 +23,38 @@
 -(id)init {
     if (!(self = [super init])) return nil;
     
-    self.minimumInteritemSpacing = 10;
-    self.minimumLineSpacing = 10;
-    self.itemSize = CGSizeMake(300, 44);
-    self.sectionInset = UIEdgeInsetsMake(30, 10, 10, 10);
-    
-    self.dynamicAnimator = [[UIDynamicAnimator alloc] initWithCollectionViewLayout:self];
-    self.visibleIndexPathsSet = [NSMutableSet set];
+    [self basicSetup];
     
     return self;
 }
 
--(void)prepareLayout {
+-(id)initWithCoder:(NSCoder *)aDecoder {
+    
+    self = [super initWithCoder:aDecoder];
+    
+    if (self) {
+        
+        [self basicSetup];
+        
+    }
+    
+    return self;
+}
+
+- (void)basicSetup {
+    
+    self.minimumInteritemSpacing = 10;
+    self.minimumLineSpacing = 4;
+    self.itemSize = CGSizeMake(312, 44);
+    self.sectionInset = UIEdgeInsetsMake(10, 0, 10, 0);
+    
+    self.dynamicAnimator = [[UIDynamicAnimator alloc] initWithCollectionViewLayout:self];
+    self.visibleIndexPathsSet = [NSMutableSet set];
+    
+}
+
+- (void)prepareLayout {
+    
     [super prepareLayout];
     
     // Need to overflow our actual visible rect slightly to avoid flickering.
@@ -96,7 +116,22 @@
 }
 
 -(UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
-    return [self.dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath];
+    
+    UICollectionViewLayoutAttributes *attributes = [self.dynamicAnimator layoutAttributesForCellAtIndexPath:indexPath];
+    
+    if(attributes) {
+        
+        return attributes;
+        
+    }else{
+        
+        // Fix critical bug, where invisible cells
+        // lose their layout (nil)
+        
+        return [super layoutAttributesForItemAtIndexPath:indexPath];
+        
+    }
+    
 }
 
 -(BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds {
