@@ -7,5 +7,5 @@ Pod::Spec.new do |s|
   s.author   = 'Ash Furrow'
   s.source   = { :git => 'https://github.com/Duffpod/UICollectionView-Spring-Demo.git' }
 
-  s.source_files   = 'TLSpringFlowLayout', 'TLSpringFlowLayout/*.{h,m}'
+  s.source_files   = 'TLSpringFlowLayout', 'UICollectionView-Spring-Demo/TLSpringFlowLayout/*.{h,m}'
 end
